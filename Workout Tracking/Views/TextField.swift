@@ -39,7 +39,10 @@ class TextField: UITextField {
             attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0x6D6D6D), .font: UIFont(name: "Helvetica", size: 16) as Any]
         )
         textColor = .white
-        borderStyle = .roundedRect
+        borderStyle = .none
         backgroundColor = UIColor(hex: 0x202020)
+        layer.borderWidth = 0
+        layer.cornerRadius = 8
+        layer.masksToBounds = true
     }
 }
