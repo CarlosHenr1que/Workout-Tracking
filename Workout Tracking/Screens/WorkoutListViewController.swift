@@ -18,6 +18,7 @@ class WorkoutListViewController: UIViewController {
         view.backgroundColor = .clear
         view.dataSource = self
         view.delegate = self
+        view.separatorStyle = .none
         view.registerCell(type: SimpleTableViewCell.self)
         return view
     }()
