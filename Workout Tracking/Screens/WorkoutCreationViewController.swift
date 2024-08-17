@@ -55,6 +55,7 @@ class WorkoutCreationViewController: UIViewController {
         view.dataSource = self
         view.delegate = self
         view.registerCell(type: SimpleTableViewCell.self)
+        view.separatorStyle = .none
         return view
     }()
     
