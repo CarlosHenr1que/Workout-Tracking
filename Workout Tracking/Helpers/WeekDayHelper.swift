@@ -10,7 +10,14 @@ import Foundation
 class WeekDayHelper {
     public static let week = ["Domingo", "Segunda", "Terça Feira", "Quarta Feira", "Quinta Feira", "Sexta Feira", "Sabado"]
     
-    static func getWeekdayText(weekday: Int) -> String? {
+    static func getCurrentWeekday() -> Int {
+        let calendar = Calendar.current
+        let date = Date()
+        let components = calendar.dateComponents([.weekday], from: date)
+        return components.weekday ?? 0
+    }
+    
+    static func getWeekdayText(weekday: Int? = getCurrentWeekday()) -> String? {
         switch (weekday) {
         case 1:
             return "Domingo"

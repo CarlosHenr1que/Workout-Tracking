@@ -78,7 +78,7 @@ class HomeViewController: UIViewController {
     }
     
     func getTodayWorkout() -> Workout? {
-        let workouts = RealmManager.shared.fetch(Workout.self, filter: "weekday = %@", args: getCurrentWeekday())
+        let workouts = RealmManager.shared.fetch(Workout.self, filter: "weekday = %@", args: WeekDayHelper.getCurrentWeekday())
         return workouts.first
     }
     
@@ -120,19 +120,12 @@ class HomeViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func getCurrentWeekday() -> Int {
-        let calendar = Calendar.current
-        let date = Date()
-        let components = calendar.dateComponents([.weekday], from: date)
-        return components.weekday ?? 0
-    }
-    
     func setupScreen() {
         view.backgroundColor = UIColor.backgroundColor
     }
     
     func setupNavigator() {
-        title = "Treino da semana"
+        title = WeekDayHelper.getWeekdayText()
         navigationController?.navigationBar.prefersLargeTitles = true
         let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
