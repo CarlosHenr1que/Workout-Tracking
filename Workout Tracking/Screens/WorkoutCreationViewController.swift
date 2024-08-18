@@ -59,6 +59,18 @@ class WorkoutCreationViewController: UIViewController {
         return view
     }()
     
+    private lazy var saveButton: UIButton = {
+        let view = UIButton()
+        view.setTitle("Salvar", for: .normal)
+        view.setTitleColor(.primaryColor, for: .normal)
+        view.titleLabel?.font = UIFont(name: "Helvetica-Bold", size: 14)
+        view.backgroundColor = .secondaryColor
+        view.layer.cornerRadius = 8
+        view.layer.masksToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -84,20 +96,6 @@ class WorkoutCreationViewController: UIViewController {
     
     func setupKeyboardDismissListener() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-    }
-    
-    func createBarButton() {
-        let plusButton = UIButton(type: .system)
-        plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        plusButton.tintColor = UIColor(hex: 0x1AFF75)
-        plusButton.backgroundColor = UIColor(hex: 0x202020)
-        plusButton.layer.cornerRadius = 15
-        plusButton.clipsToBounds = true
-        plusButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        plusButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
-        let barButtonItem = UIBarButtonItem(customView: plusButton)
-        
-        navigationItem.rightBarButtonItem = barButtonItem
     }
     
     func isFormFullFilled() -> Bool {
@@ -142,7 +140,6 @@ class WorkoutCreationViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
-        createBarButton()
     }
     
     func setCurrentWorkout() {
@@ -160,6 +157,7 @@ class WorkoutCreationViewController: UIViewController {
         setupNavigator()
         view.backgroundColor = UIColor.backgroundColor
         addExerciseButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         setCurrentWorkout()
     }
     
@@ -178,10 +176,11 @@ class WorkoutCreationViewController: UIViewController {
 
 extension WorkoutCreationViewController: ViewCode {
     func buildHierarchy() {
-        self.view.addSubview(nameTextField)
-        self.view.addSubview(weekdayTextField)
-        self.view.addSubview(exercisesLabelStack)
-        self.view.addSubview(exercisesTableView)
+        view.addSubview(nameTextField)
+        view.addSubview(weekdayTextField)
+        view.addSubview(exercisesLabelStack)
+        view.addSubview(exercisesTableView)
+        view.addSubview(saveButton)
     }
     
     func setupConstraints() {
@@ -204,6 +203,11 @@ extension WorkoutCreationViewController: ViewCode {
             exercisesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             exercisesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             exercisesTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 10),
+            
+            saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+            saveButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            saveButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            saveButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
 }
