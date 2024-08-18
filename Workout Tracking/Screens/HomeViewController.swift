@@ -39,6 +39,15 @@ class HomeViewController: UIViewController {
         return view
     }()
     
+    private lazy var currentWorkoutLabel: UILabel = {
+        let view = UILabel()
+        view.textColor = .white
+        view.text = "Treino atual"
+        view.font = UIFont(name: "Helvetica-Bold", size: 14)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupScreen()
@@ -146,6 +155,7 @@ extension HomeViewController: ViewCode {
     func buildHierarchy() {
         view.addSubview(weekCardView)
         view.addSubview(workoutCard)
+        view.addSubview(currentWorkoutLabel)
         view.addSubview(workoutButton)
     }
     
@@ -156,7 +166,10 @@ extension HomeViewController: ViewCode {
             weekCardView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             weekCardView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             
-            workoutCard.topAnchor.constraint(equalTo: weekCardView.bottomAnchor, constant: 10),
+            currentWorkoutLabel.topAnchor.constraint(equalTo: weekCardView.bottomAnchor, constant: 20),
+            currentWorkoutLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            
+            workoutCard.topAnchor.constraint(equalTo: currentWorkoutLabel.bottomAnchor, constant: 10),
             workoutCard.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             workoutCard.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
