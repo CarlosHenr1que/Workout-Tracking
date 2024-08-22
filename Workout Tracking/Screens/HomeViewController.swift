@@ -25,14 +25,9 @@ class HomeViewController: UIViewController {
         return view
     }()
     
-    private lazy var workoutButton: UIButton = {
-        let view = UIButton()
-        view.translatesAutoresizingMaskIntoConstraints = false
+    private lazy var workoutButton: WTButton = {
+        let view = WTButton()
         view.setTitle("Começar", for: .normal)
-        view.titleLabel?.font = UIFont(name: "Helvetica-Bold", size: 14)
-        view.backgroundColor = UIColor.primaryColor
-        view.layer.cornerRadius = 8
-        view.layer.masksToBounds = true
         view.isHidden = true
         view.isUserInteractionEnabled = true
         view.alpha = 1.0

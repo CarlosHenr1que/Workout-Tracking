@@ -12,6 +12,7 @@
 		E50CFD8A2C4B0FB60041D5B4 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50CFD892C4B0FB60041D5B4 /* History.swift */; };
 		E510D4732C49F736004D924D /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D4722C49F736004D924D /* RealmManager.swift */; };
 		E510D4752C4A0045004D924D /* WorkoutCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D4742C4A0045004D924D /* WorkoutCard.swift */; };
+		E531EB672C73EA2900C08305 /* WTButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E531EB662C73EA2900C08305 /* WTButton.swift */; };
 		E5BF19EE2C53C00400E5904E /* WorkoutHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF19ED2C53C00400E5904E /* WorkoutHistoryViewController.swift */; };
 		E5C02C232C3D7E51000FB6A2 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C02C222C3D7E51000FB6A2 /* TextField.swift */; };
 		E5C02C262C3D8C1E000FB6A2 /* WeekDayHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C02C252C3D8C1E000FB6A2 /* WeekDayHelper.swift */; };
@@ -40,6 +41,7 @@
 		E50CFD892C4B0FB60041D5B4 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		E510D4722C49F736004D924D /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		E510D4742C4A0045004D924D /* WorkoutCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutCard.swift; sourceTree = "<group>"; };
+		E531EB662C73EA2900C08305 /* WTButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WTButton.swift; sourceTree = "<group>"; };
 		E5BF19ED2C53C00400E5904E /* WorkoutHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHistoryViewController.swift; sourceTree = "<group>"; };
 		E5C02C222C3D7E51000FB6A2 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		E5C02C252C3D8C1E000FB6A2 /* WeekDayHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekDayHelper.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				E5D2C1B62C3B627D0065BB8D /* SimpleTableViewCell.swift */,
 				E5C02C222C3D7E51000FB6A2 /* TextField.swift */,
 				E510D4742C4A0045004D924D /* WorkoutCard.swift */,
+				E531EB662C73EA2900C08305 /* WTButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E531EB672C73EA2900C08305 /* WTButton.swift in Sources */,
 				E5DDD97E2C3418850055A740 /* AppDelegate.swift in Sources */,
 				E50CFD882C4AE9560041D5B4 /* WorkoutProgressViewController.swift in Sources */,
 				E5E941812C60398D00B4617D /* HistoryListViewController.swift in Sources */,
