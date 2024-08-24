@@ -40,6 +40,7 @@ class HomeViewController: UIViewController {
         view.text = "Treino atual"
         view.font = UIFont(name: "Helvetica-Bold", size: 14)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
         return view
     }()
     
@@ -60,11 +61,33 @@ class HomeViewController: UIViewController {
     }
     
     func configureConcludedWorkout(_ history: History) {
+        currentHistory = history
         workoutCard.isHidden = false
         workoutButton.isHidden = true
-        currentHistory = history
+        currentWorkoutLabel.isHidden = false
+        currentWorkoutLabel.text = "Treino concluído"
         let count = String(history.workout!.exercises.count)
         workoutCard.configure(history.workout!.name, "\(count) Exercicios")
+    }
+    
+    func configureInProgress(_ history: History) {
+        currentWorkoutLabel.isHidden = false
+        workoutButton.setTitle("Continuar", for: .normal)
+        currentWorkoutLabel.text = "Treino atual"
+        workoutCard.isHidden = false
+        workoutButton.isHidden = false
+        currentHistory = history
+        workoutCard.configure(history.workout!.name, "\(String(history.workout!.exercises.count)) Exercicios")
+    }
+    
+    func configureCurrentWorkout(_ workout: Workout) {
+        workoutButton.setTitle("Começar", for: .normal)
+        currentWorkoutLabel.text = "Treino atual"
+        currentWorkout = workout
+        workoutCard.isHidden = false
+        workoutButton.isHidden = false
+        currentWorkoutLabel.isHidden = false
+        workoutCard.configure(workout.name, "\(String(workout.exercises.count)) Exercicios")
     }
     
     func setupCurrentWorkout() {
@@ -72,26 +95,17 @@ class HomeViewController: UIViewController {
             currentHistory = nil
             
             guard let todayWorkout = getTodayWorkout() else {
+                currentWorkoutLabel.isHidden = true
                 return
             }
-            
-            workoutButton.setTitle("Começar", for: .normal)
-            currentWorkout = todayWorkout
-            workoutCard.isHidden = false
-            workoutButton.isHidden = false
-            workoutCard.configure(todayWorkout.name, "\(String(todayWorkout.exercises.count)) Exercicios")
+            configureCurrentWorkout(todayWorkout)
             return
         }
         if todayHistory.concluded == true {
             configureConcludedWorkout(todayHistory)
             return
         }
-        
-        workoutButton.setTitle("Continuar", for: .normal)
-        workoutCard.isHidden = false
-        workoutButton.isHidden = false
-        currentHistory = todayHistory
-        workoutCard.configure(todayHistory.workout!.name, "\(String(todayHistory.workout!.exercises.count)) Exercicios")
+        configureInProgress(todayHistory)
     }
     
     func getTodayWorkout() -> Workout? {
