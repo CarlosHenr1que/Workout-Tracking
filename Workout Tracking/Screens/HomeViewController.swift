@@ -45,6 +45,10 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureScreen()
+    }
+    
+    private func configureScreen() {
         setupScreen()
         setupNavigator()
         setup()
@@ -71,6 +75,7 @@ class HomeViewController: UIViewController {
                 return
             }
             
+            workoutButton.setTitle("Começar", for: .normal)
             currentWorkout = todayWorkout
             workoutCard.isHidden = false
             workoutButton.isHidden = false
@@ -100,7 +105,6 @@ class HomeViewController: UIViewController {
         let histories = RealmManager.shared.fetch(History.self, filter: "date >= %@ AND date < %@", args: today, tomorrow)
         return histories.first
     }
-    
     
     func setupActions() {
         weekCardView.onPress = {
