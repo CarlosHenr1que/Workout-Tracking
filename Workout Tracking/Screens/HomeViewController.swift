@@ -34,13 +34,21 @@ class HomeViewController: UIViewController {
         return view
     }()
     
+    private lazy var createWorkoutButton: WTButton = {
+        let view = WTButton()
+        view.setTitle("Criar novo treino", for: .normal)
+        view.isHidden = true
+        view.isUserInteractionEnabled = true
+        view.alpha = 1.0
+        return view
+    }()
+    
     private lazy var currentWorkoutLabel: UILabel = {
         let view = UILabel()
         view.textColor = .white
         view.text = "Treino atual"
         view.font = UIFont(name: "Helvetica-Bold", size: 14)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.isHidden = true
         return view
     }()
     
@@ -65,6 +73,7 @@ class HomeViewController: UIViewController {
         workoutCard.isHidden = false
         workoutButton.isHidden = true
         currentWorkoutLabel.isHidden = false
+        createWorkoutButton.isHidden = true
         currentWorkoutLabel.text = "Treino concluído"
         let count = String(history.workout!.exercises.count)
         workoutCard.configure(history.workout!.name, "\(count) Exercicios")
@@ -76,6 +85,7 @@ class HomeViewController: UIViewController {
         currentWorkoutLabel.text = "Treino atual"
         workoutCard.isHidden = false
         workoutButton.isHidden = false
+        createWorkoutButton.isHidden = true
         currentHistory = history
         workoutCard.configure(history.workout!.name, "\(String(history.workout!.exercises.count)) Exercicios")
     }
@@ -84,6 +94,7 @@ class HomeViewController: UIViewController {
         workoutButton.setTitle("Começar", for: .normal)
         currentWorkoutLabel.text = "Treino atual"
         currentWorkout = workout
+        createWorkoutButton.isHidden = true
         workoutCard.isHidden = false
         workoutButton.isHidden = false
         currentWorkoutLabel.isHidden = false
@@ -95,7 +106,7 @@ class HomeViewController: UIViewController {
             currentHistory = nil
             
             guard let todayWorkout = getTodayWorkout() else {
-                currentWorkoutLabel.isHidden = true
+                createWorkoutButton.isHidden = false
                 return
             }
             configureCurrentWorkout(todayWorkout)
@@ -122,10 +133,15 @@ class HomeViewController: UIViewController {
     
     func setupActions() {
         weekCardView.onPress = {
-            self.navigationController?.pushViewController(WorkoutListViewController(), animated: true)
+            self.navigateToWorkoutList()
         }
         workoutButton.addTarget(self, action: #selector(onPressWorkouButton), for: .touchUpInside)
         workoutCard.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onPressWorkoutCard)))
+        createWorkoutButton.addTarget(self, action: #selector(navigateToWorkoutList), for: .touchUpInside)
+    }
+    
+    @objc func navigateToWorkoutList() {
+        self.navigationController?.pushViewController(WorkoutListViewController(), animated: true)
     }
     
     @objc func onPressWorkoutCard() {
@@ -178,6 +194,7 @@ extension HomeViewController: ViewCode {
         view.addSubview(workoutCard)
         view.addSubview(currentWorkoutLabel)
         view.addSubview(workoutButton)
+        view.addSubview(createWorkoutButton)
     }
     
     func setupConstraints() {
@@ -198,6 +215,11 @@ extension HomeViewController: ViewCode {
             workoutButton.topAnchor.constraint(equalTo: workoutCard.bottomAnchor, constant: 10),
             workoutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             workoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            createWorkoutButton.heightAnchor.constraint(equalToConstant: 45),
+            createWorkoutButton.topAnchor.constraint(equalTo: currentWorkoutLabel.bottomAnchor, constant: 10),
+            createWorkoutButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            createWorkoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
     }
 }
