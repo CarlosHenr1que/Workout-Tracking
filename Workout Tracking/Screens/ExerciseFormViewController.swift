@@ -15,7 +15,9 @@ class ExerciseFormViewController: UIViewController {
     }()
     
     private lazy var setsTextField: UITextField = {
-        TextField(frame: .zero, placeholderText: "Series")
+        let view = TextField(frame: .zero, placeholderText: "Series")
+        view.keyboardType = .numberPad
+        return view
     }()
 
     override func viewDidLoad() {
