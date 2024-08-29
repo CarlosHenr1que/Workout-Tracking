@@ -92,6 +92,12 @@ class WorkoutProgressViewController: UIViewController {
         }
     }
     
+    private var reps = 10 {
+        didSet {
+            repsCard.configure("Repetições", "\(reps)")
+        }
+    }
+    
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Helvetica-Regular", size: 14)
@@ -118,8 +124,8 @@ class WorkoutProgressViewController: UIViewController {
         return view
     }()
     
-    private lazy var repsCard: SimpleCard = {
-       let view = SimpleCard()
+    private lazy var repsCard: WTCounterCard = {
+       let view = WTCounterCard()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -225,6 +231,8 @@ class WorkoutProgressViewController: UIViewController {
     
     func setupActions() {
         exerciseButton.addTarget(self, action: #selector(onContinuePress), for: .touchUpInside)
+        repsCard.onPressFirstButton = { self.reps = self.reps - 1}
+        repsCard.onPressSecondButton = { self.reps = self.reps + 1}
     }
     
     func hasExerciseSetsFinished() -> Bool {
@@ -234,7 +242,7 @@ class WorkoutProgressViewController: UIViewController {
     @objc func onContinuePress() {
         if exerciseHistory!.sets.count < exerciseHistory!.exercise!.sets {
             RealmManager.shared.update {
-                exerciseHistory?.sets.append(10)
+                exerciseHistory?.sets.append(reps)
                 updateSets()
                 updateButton()
             }
