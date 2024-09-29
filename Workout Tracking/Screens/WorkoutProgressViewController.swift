@@ -38,7 +38,7 @@ class SimpleCard: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-        
+    
     private func setupViews() {
         self.backgroundColor = UIColor(hex: 0x202020)
         self.layer.cornerRadius = 16
@@ -83,7 +83,18 @@ extension SimpleCard: ViewCode {
 class WorkoutProgressViewController: UIViewController {
     var workoutHistory: History?
     var exerciseHistory: ExerciseHistory?
+    var isResting: Bool?
     
+    var timer: Timer?
+    var totalTime: Float = 60.0
+    var remainingTime: Float = 60.0
+    
+    private var exercise = "" {
+        didSet {
+            titleLabel.text = exercise
+            descriptionLabel.text = "Exercício"
+        }
+    }
     
     private var sets = "1" {
         didSet {
@@ -118,14 +129,24 @@ class WorkoutProgressViewController: UIViewController {
         return label
     }()
     
+    private lazy var progressBar: UIProgressView = {
+        let view = UIProgressView(progressViewStyle: .default)
+        view.progress = 1.0
+        view.progressTintColor = .secondaryColor
+        view.trackTintColor = .primaryColor
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private lazy var setsCard: SimpleCard = {
-       let view = SimpleCard()
+        let view = SimpleCard()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private lazy var repsCard: WTCounterCard = {
-       let view = WTCounterCard()
+        let view = WTCounterCard()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -160,7 +181,7 @@ class WorkoutProgressViewController: UIViewController {
         view.separatorStyle = .none
         return view
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -190,15 +211,18 @@ class WorkoutProgressViewController: UIViewController {
         if isLastSet()  {
             exerciseButton.setTitle("Próximo exercício", for: .normal)
         } else {
-            exerciseButton.setTitle("Próxima série", for: .normal)
+            if isResting == true {
+                exerciseButton.setTitle("Continuar", for: .normal)
+            } else {
+                exerciseButton.setTitle("Próxima série", for: .normal)
+            }
+            
         }
     }
     
     func updateInformation() {
-        titleLabel.text = exerciseHistory?.exercise?.name
-        updateSets()
-        updateReps()
-        updateButton()
+        exercise = exerciseHistory!.exercise!.name
+        sets = String(exerciseHistory!.sets.count)
     }
     
     func getCurrentExerciseHistory(history: History) -> ExerciseHistory? {
@@ -215,15 +239,17 @@ class WorkoutProgressViewController: UIViewController {
     }
     
     func setupExercise() {
-        exerciseHistory = getCurrentExerciseHistory(history: workoutHistory!)
-        if exerciseHistory == nil {
+        guard let currentHistory = getCurrentExerciseHistory(history: workoutHistory!) else {
             createInitalExerciseHistory(history: workoutHistory!)
+            updateInformation()
+            return
         }
+        exerciseHistory = currentHistory
         updateInformation()
     }
     
     func setupNavigator() {
-        title = "Posterior"
+        title = workoutHistory?.workout?.name
         navigationController?.navigationBar.prefersLargeTitles = true
         let textAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
@@ -239,35 +265,90 @@ class WorkoutProgressViewController: UIViewController {
         return exerciseHistory!.sets.count < exerciseHistory!.exercise!.sets
     }
     
-    @objc func onContinuePress() {
-        if exerciseHistory!.sets.count < exerciseHistory!.exercise!.sets {
-            RealmManager.shared.update {
-                exerciseHistory?.sets.append(reps)
-                updateSets()
-                updateButton()
-            }
-            return
-        }
-        
-        let currentExerciseIndex = workoutHistory!.workout!.exercises.index(of: exerciseHistory!.exercise!)
-        if currentExerciseIndex! + 1 == workoutHistory?.workout?.exercises.count {
-            RealmManager.shared.update {
-                workoutHistory?.concluded = true
-                workoutHistory?.date = Date()
-            }
-            navigationController?.popViewController(animated: true)
-            return
-        }
-        
-        let nextExercise = workoutHistory!.workout!.exercises[currentExerciseIndex! + 1]
-        let nextExerciseHistory = ExerciseHistory()
-        nextExerciseHistory.exercise = nextExercise
-        exerciseHistory = nextExerciseHistory
-        RealmManager.shared.update {
-            workoutHistory?.exercises.append(exerciseHistory!)
-            workoutHistory?.currentExercise = nextExerciseHistory.id
-        }
+    func hasMoreSets() -> Bool {
+        return exerciseHistory!.sets.count < exerciseHistory!.exercise!.sets
+    }
+    
+    func saveCurrentSet() {
+        print("saved current set")
+        exerciseHistory?.sets.append(reps)
         updateInformation()
+        progressBar.isHidden = false
+        isResting = true
+        descriptionLabel.text = "Descanso"
+        titleLabel.text = "01:00"
+        startCountdown()
+    }
+    
+    func getNextExercise() -> Exercise? {
+        let currentExerciseIndex = workoutHistory!.workout!.exercises.index(of: exerciseHistory!.exercise!)!
+        if currentExerciseIndex + 1 < workoutHistory!.workout!.exercises.count {
+            return workoutHistory!.workout!.exercises[currentExerciseIndex + 1]
+        }
+        return nil
+    }
+    
+    @objc func onContinuePress() {
+        if isResting == true {
+            progressBar.isHidden = true
+            isResting = false
+            updateInformation()
+            timer?.invalidate()
+            return
+        }
+        
+        if !hasMoreSets() {
+            guard let nextExercise = getNextExercise() else {
+                print("finish workout")
+                RealmManager.shared.update {
+                    workoutHistory?.concluded = true
+                    workoutHistory?.date = Date()
+                }
+                navigationController?.popViewController(animated: true)
+                updateInformation()
+                return
+            }
+            print("next exercise called")
+            let nextExerciseHistory = ExerciseHistory()
+            nextExerciseHistory.exercise = nextExercise
+            exerciseHistory = nextExerciseHistory
+            RealmManager.shared.update {
+                workoutHistory?.exercises.append(exerciseHistory!)
+                workoutHistory?.currentExercise = nextExerciseHistory.id
+                updateInformation()
+            }
+            return
+        }
+        
+
+        
+        print("next set called")
+        RealmManager.shared.update {
+            saveCurrentSet()
+        }
+    }
+    
+    func startCountdown() {
+        remainingTime = totalTime
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
+    }
+    
+    // Function to update progress
+    @objc func updateProgress() {
+        if remainingTime > 0 {
+            remainingTime -= 1
+            let progress = remainingTime / totalTime
+            progressBar.setProgress(progress, animated: true)
+            titleLabel.text = "\(progress)"
+            let minutes = Int(remainingTime) / 60
+            let seconds = Int(remainingTime) % 60
+            titleLabel.text = String(format: "%02d:%02d", minutes, seconds)
+            
+        } else {
+            timer?.invalidate()
+            timer = nil
+            onContinuePress()
+        }
     }
 }
 
@@ -290,6 +371,7 @@ extension WorkoutProgressViewController: ViewCode {
     func buildHierarchy() {
         view.addSubview(descriptionLabel)
         view.addSubview(titleLabel)
+        view.addSubview(progressBar)
         view.addSubview(setsCard)
         view.addSubview(exerciseButton)
         view.addSubview(exerciseLabel)
@@ -307,7 +389,11 @@ extension WorkoutProgressViewController: ViewCode {
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            setsCard.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+            progressBar.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            progressBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            progressBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            setsCard.topAnchor.constraint(equalTo: progressBar.bottomAnchor, constant: 10),
             setsCard.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             setsCard.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             

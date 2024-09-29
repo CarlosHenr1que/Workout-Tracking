@@ -12,6 +12,7 @@
 		E50CFD8A2C4B0FB60041D5B4 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50CFD892C4B0FB60041D5B4 /* History.swift */; };
 		E510D4732C49F736004D924D /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D4722C49F736004D924D /* RealmManager.swift */; };
 		E510D4752C4A0045004D924D /* WorkoutCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D4742C4A0045004D924D /* WorkoutCard.swift */; };
+		E52A96E32C80B953001B3B1C /* WTCounterCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52A96E22C80B953001B3B1C /* WTCounterCard.swift */; };
 		E531EB672C73EA2900C08305 /* WTButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E531EB662C73EA2900C08305 /* WTButton.swift */; };
 		E5BF19EE2C53C00400E5904E /* WorkoutHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF19ED2C53C00400E5904E /* WorkoutHistoryViewController.swift */; };
 		E5C02C232C3D7E51000FB6A2 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C02C222C3D7E51000FB6A2 /* TextField.swift */; };
@@ -41,6 +42,7 @@
 		E50CFD892C4B0FB60041D5B4 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		E510D4722C49F736004D924D /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		E510D4742C4A0045004D924D /* WorkoutCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutCard.swift; sourceTree = "<group>"; };
+		E52A96E22C80B953001B3B1C /* WTCounterCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WTCounterCard.swift; sourceTree = "<group>"; };
 		E531EB662C73EA2900C08305 /* WTButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WTButton.swift; sourceTree = "<group>"; };
 		E5BF19ED2C53C00400E5904E /* WorkoutHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHistoryViewController.swift; sourceTree = "<group>"; };
 		E5C02C222C3D7E51000FB6A2 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
@@ -95,6 +97,13 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		E56A3D792CA9D52F00A5E4FC /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		E5C02C242C3D8C12000FB6A2 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +144,7 @@
 		E5DDD97C2C3418850055A740 /* Workout Tracking */ = {
 			isa = PBXGroup;
 			children = (
+				E56A3D792CA9D52F00A5E4FC /* New Group */,
 				E5D730EA2C43400D00B5E10C /* Data Model */,
 				E5C02C242C3D8C12000FB6A2 /* Helpers */,
 				E5DDD9972C341BCF0055A740 /* Screens */,
@@ -157,6 +167,7 @@
 				E5C02C222C3D7E51000FB6A2 /* TextField.swift */,
 				E510D4742C4A0045004D924D /* WorkoutCard.swift */,
 				E531EB662C73EA2900C08305 /* WTButton.swift */,
+				E52A96E22C80B953001B3B1C /* WTCounterCard.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -310,6 +321,7 @@
 				E5DDD9802C3418850055A740 /* SceneDelegate.swift in Sources */,
 				E5D730EC2C43401D00B5E10C /* Exercise.swift in Sources */,
 				E5DDD9932C3419750055A740 /* HomeViewController.swift in Sources */,
+				E52A96E32C80B953001B3B1C /* WTCounterCard.swift in Sources */,
 				E5BF19EE2C53C00400E5904E /* WorkoutHistoryViewController.swift in Sources */,
 				E510D4752C4A0045004D924D /* WorkoutCard.swift in Sources */,
 				E5DDD99D2C341F820055A740 /* WeekCard.swift in Sources */,

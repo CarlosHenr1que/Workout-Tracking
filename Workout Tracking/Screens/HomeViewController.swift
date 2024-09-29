@@ -55,6 +55,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureScreen()
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
     }
     
     private func configureScreen() {
