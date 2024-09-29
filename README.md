@@ -16,6 +16,11 @@ This app allows you to easily create and manage your workouts, track exercises, 
 - View Code
 - Realm
 
+<div>
+  <img src=".github/video1.gif" width="390" height="844" />
+  <img src=".github/video2.gif" width="390" height="844" />
+</div>
+
 ## Getting Started
 
 ### Prerequisites
