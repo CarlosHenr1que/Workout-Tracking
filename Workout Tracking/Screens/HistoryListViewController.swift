@@ -74,12 +74,13 @@ extension HistoryListViewController: UITableViewDelegate, UITableViewDataSource 
         guard let cell = tableView.dequeueCell(withType: SimpleTableViewCell.self, for: indexPath) as? SimpleTableViewCell else {
             return UITableViewCell()
         }
-        if let history = historyList?[indexPath.row] {
-            let workout = history.workout!
-            let title = workout.name
-            let subTitle = WeekDayHelper.getWeekdayText(weekday: workout.weekday) ?? "Segunda"
-            cell.configure(title: title, subTitle: subTitle)
+        
+        guard let workout = historyList?[indexPath.row].workout else {
+            return cell
         }
+        let title = workout.name
+        let subTitle = WeekDayHelper.getWeekdayText(weekday: workout.weekday)!
+        cell.configure(title: title, subTitle: subTitle)
         
         return cell
     }
